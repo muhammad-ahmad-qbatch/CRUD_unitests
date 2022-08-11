@@ -92,6 +92,16 @@ class CrudTest(unittest.TestCase):
             self.fixture.when_update_user_data_is_called()
             self.fixture.then_result_should_be(False)
         
+        def test_no_table_name_given_for_update_user_data(self):
+            self.fixture.given_invalid_condition_for_update_user_data(t_name = ' ', c_value = {'name' : 'Ahmad'}, condition = {'email' : '1'})
+            self.fixture.when_update_user_data_is_called()
+            self.fixture.then_result_should_be(False)
+            
+        def test_no_key_provided_for_update_user_data(self):
+            self.fixture.given_invalid_condition_for_update_user_data(t_name = 'user', c_value = {'name' : 'Ahmad'}, condition = {' ' : '1'})
+            self.fixture.when_update_user_data_is_called()
+            self.fixture.then_result_should_be(False)
+        
         def test_delete_user_data(self):
             self.fixture.given_delete_user_data(table = 'user', condition = {'key' : 'value'})
             self.fixture.when_delete_user_data_is_called()
@@ -224,9 +234,7 @@ class CrudTest(unittest.TestCase):
                 try:
                     self.result = self.user.update(self.t_name, self.c_value, self.condition)
                 except Exception as e:
-                    # get name of that exception
-                    # self.exception_name=""
-                    pass
+                    print(e)
                          
             def when_delete_user_data_is_called(self):
                 self.result = self.user.delete(self.t_name, self.condition)
